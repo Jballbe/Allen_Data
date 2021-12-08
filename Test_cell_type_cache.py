@@ -19,29 +19,41 @@ mycells=ctc.get_cells(require_morphology=False,
                       require_reconstruction=False,
                       species=[CellTypesApi.MOUSE])
 
-
-
-#%%
-print(mycells[1].keys())
-if 'reporter_jhbstatus' in mycells[1].keys():
-    print('okokok')
-#%% Create sub dataframes
+#%% Count data per area
 area_dict={}
 for elt in range(0,len(mycells)):
     current_area=mycells[elt].get("structure_area_abbrev")
-    print(elt)
+
     if current_area in area_dict.keys():
         area_dict[current_area]+=1
     else:
         area_dict[current_area]=1
         
-print('ok')
-        
-    
-#%%
 
+    
+#%% Create a list containing all the mycells id
+id_list=list()
+for elt in range(0,len(mycells)):
+    id_list.append(mycells[elt].get('id'))
+
+
+#%% Create a ephys feature table only for mouse data
+data_feat=ctc.get_ephys_features(mycells[0]['id'])
+my_data_feat=data_feat[data_feat['specimen_id'].isin(id_list)]
+# note that the link between the get_cells and the get_ephys_features tables is get_cells.id=get_ephys_features.specimen_id
+
+
+
+
+
+
+
+
+#not ready
+#%%
 data_set=ctc.get_ephys_data(mycells[0]['id'])
 
+data_feat=ctc.get_ephys_features(mycells[0]['id'])
 #%%
 mysweeps=data_set.get_sweep_numbers()
 #%%
