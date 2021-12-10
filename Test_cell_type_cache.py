@@ -51,6 +51,17 @@ my_data_feat=data_feat[data_feat['specimen_id'].isin(id_list)]
 
 #not ready
 #%%
+import csv
+mydict=[area_dict]
+area_name=area_dict.keys()
+with open('Area_counter.csv','w') as csvfile:
+    writer = csv.DictWriter(csvfile, fieldnames=area_name)
+    writer.writeheader()
+    writer.writerows(mydict)
+
+#%%
+
+
 data_set=ctc.get_ephys_data(mycells[0]['id'])
 
 data_feat=ctc.get_ephys_features(mycells[0]['id'])
